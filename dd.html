@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YURT UYG'ONISHI | Ijtimoiy Rivojlanish Ekotizimi</title>
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --accent-light: #60a5fa;
+            --glass: rgba(255,255,255,0.08);
+            --glass-border: rgba(255,255,255,0.15);
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --radius: 16px;
+            --shadow: 0 8px 32px rgba(0,0,0,0.35);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background: linear-gradient(135deg, #0b1120 0%, #1e293b 50%, #0f172a 100%); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+        
+        /* Animatsiyalar */
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+        @keyframes pulse-glow { 0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,0.5)} 50%{box-shadow:0 0 0 12px rgba(59,130,246,0)} }
+        @keyframes gradient-shift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        @keyframes fadeInUp { from {opacity:0;transform:translateY(30px)} to {opacity:1;transform:translateY(0)} }
+        
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Header */
+        header { position: fixed; top: 0; width: 100%; padding: 16px 5%; background: rgba(15,23,42,0.85); backdrop-filter: blur(12px); z-index: 1000; border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 800; background: linear-gradient(90deg, var(--accent), #8b5cf6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        nav a { color: var(--text-muted); text-decoration: none; margin-left: 24px; font-weight: 500; transition: 0.3s; }
+        nav a:hover { color: var(--accent-light); }
+
+        /* Hero */
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 120px 20px 80px; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 30%, rgba(59,130,246,0.25), transparent 50%), radial-gradient(circle at 70% 70%, rgba(139,92,246,0.2), transparent 50%); z-index: -1; }
+        .badge { display: inline-block; padding: 8px 16px; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 50px; font-size: 0.9rem; margin-bottom: 24px; animation: pulse-glow 3s infinite; }
+        h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; line-height: 1.1; margin-bottom: 24px; background: linear-gradient(90deg, #fff, var(--accent-light), #c084fc); background-size: 200% 200%; animation: gradient-shift 6s ease infinite; -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .hero p { max-width: 700px; font-size: 1.2rem; color: var(--text-muted); margin-bottom: 32px; }
+        .btn-group { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+        .btn { padding: 14px 28px; border-radius: 12px; font-weight: 600; cursor: pointer; border: none; transition: 0.3s; text-decoration: none; }
+        .btn-primary { background: linear-gradient(90deg, var(--accent), #8b5cf6); color: white; box-shadow: 0 4px 20px rgba(59,130,246,0.4); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(59,130,246,0.6); }
+        .btn-outline { background: transparent; border: 2px solid var(--glass-border); color: var(--text); }
+        .btn-outline:hover { background: var(--glass); border-color: var(--accent); }
+
+        /* Sections */
+        section { padding: 80px 5%; max-width: 1400px; margin: 0 auto; }
+        h2 { font-size: 2.5rem; margin-bottom: 16px; text-align: center; }
+        .subtitle { text-align: center; color: var(--text-muted); max-width: 800px; margin: 0 auto 48px; }
+        
+        /* Grid & Cards */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+        .card { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 28px; transition: 0.4s; backdrop-filter: blur(10px); }
+        .card:hover { transform: translateY(-8px) scale(1.02); border-color: var(--accent); box-shadow: var(--shadow); }
+        .card h3 { font-size: 1.4rem; margin: 12px 0 8px; display: flex; align-items: center; gap: 10px; }
+        .card p { color: var(--text-muted); font-size: 0.95rem; }
+        .icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent), #8b5cf6); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+
+        /* Dashboard */
+        .dashboard { background: var(--glass); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 32px; margin: 40px 0; }
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 24px; }
+        .metric { text-align: center; padding: 16px; background: rgba(0,0,0,0.2); border-radius: 12px; }
+        .metric .num { font-size: 2.2rem; font-weight: 800; color: var(--accent-light); }
+        .metric .label { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Roadmap */
+        .roadmap { position: relative; padding-left: 24px; }
+        .roadmap::before { content: ''; position: absolute; left: 6px; top: 0; bottom: 0; width: 2px; background: var(--glass-border); }
+        .roadmap-item { margin-bottom: 32px; position: relative; }
+        .roadmap-item::before { content: ''; position: absolute; left: -20px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--primary); }
+        .roadmap-item h4 { margin-bottom: 6px; color: var(--text); }
+        .roadmap-item p { color: var(--text-muted); font-size: 0.95rem; }
+        .status { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; margin-top: 6px; }
+        .status.active { background: rgba(16,185,129,0.2); color: var(--success); }
+        .status.planned { background: rgba(245,158,11,0.2); color: var(--warning); }
+
+        /* Knowledge */
+        .knowledge-box { background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.1)); border-left: 4px solid var(--accent); padding: 24px; border-radius: 12px; margin: 24px 0; }
+        .knowledge-box h4 { margin-bottom: 8px; }
+        ul { padding-left: 20px; color: var(--text-muted); }
+        li { margin-bottom: 6px; }
+
+        /* Footer */
+        footer { background: rgba(0,0,0,0.3); border-top: 1px solid var(--glass-border); padding: 40px 5%; text-align: center; color: var(--text-muted); margin-top: 60px; }
+        .footer-links { display: flex; justify-content: center; gap: 20px; margin: 20px 0; flex-wrap: wrap; }
+        .footer-links a { color: var(--text); text-decoration: none; transition: 0.3s; }
+        .footer-links a:hover { color: var(--accent); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav { display: none; }
+            h1 { font-size: 2.2rem; }
+            section { padding: 60px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">YURT UYG'ONISHI</div>
+    <nav>
+        <a href="#vision">Vazifalar</a>
+        <a href="#pillars">Yo'nalishlar</a>
+        <a href="#dashboard">Natijalar</a>
+        <a href="#roadmap">Bosqichlar</a>
+        <a href="#join">Qo'shilish</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <div class="badge">🇺🇿 Rasmiy ijtimoiy innovatsion platforma</div>
+    <h1>Kelajakni Bugun Birga Quramiz</h1>
+    <p>Har bir fuqaro, mutaxassis va tashkilotni birlashtiruvchi raqamli ekotizim. Ta'lim, ekologiya, sog'liq va ijtimoiy himoya yo'nalishlarida shaffof, tezkor va o'lchanadigan natijalar.</p>
+    <div class="btn-group">
+        <a href="#pillars" class="btn btn-primary">Loyihani Ko'rish</a>
+        <a href="#join" class="btn btn-outline">Volontyor Bo'lish</a>
+    </div>
+</section>
+
+<section id="vision" class="reveal">
+    <h2>🎯 Maqsad & Vazifalar</h2>
+    <p class="subtitle">Platforma 2030-yilgacha barqaror rivojlanish maqsadlariga (SDG) moslashtirilgan bo'lib, quyidagi asosiy yo'nalishlarni qamrab oladi:</p>
+    <div class="grid">
+        <div class="card"><div class="icon">📊</div><h3>Shaffof Boshqaruv</h3><p>Barcha moliyaviy oqimlar, hisobotlar va natijalar real vaqt rejimida ochiq. Blockchain asosidagi auditi tizimi.</p></div>
+        <div class="card"><div class="icon">🤝</div><h3>Jamoaviy Yechimlar</h3><p>Fuqarolar takliflari, mutaxassislar maslahatlari va davlat resurslari bitta platformada sinxronlanadi.</p></div>
+        <div class="card"><div class="icon">📈</div><h3>O'lchanadigan Ta'sir</h3><p>Har bir loyiha KPI, ROI va ijtimoiy samaradorlik indekslari orqali baholanadi.</p></div>
+        <div class="card"><div class="icon">🌍</div><h3>Barqaror Rivojlanish</h3><p>Ekologik izni kamaytirish, yashil iqtisodiyot va kelajak avlod uchun resurslarni saqlash.</p></div>
+    </div>
+</section>
+
+<section id="pillars" class="reveal">
+    <h2>🏛️ 6 Ta Asosiy Ustun</h2>
+    <p class="subtitle">Har bir yo'nalish alohida modul sifatida ishlaydi, lekin yagona ma'lumotlar bazasiga ulanadi.</p>
+    <div class="grid">
+        <div class="card"><div class="icon">🌱</div><h3>Ekologiya & Yashil Hudud</h3><p>Daraxt ekish aksiyalari, chiqqini qayta ishlash markazlari, suv resurslarini tejash va havoni monitoring qilish tizimi.</p></div>
+        <div class="card"><div class="icon">📚</div><h3>Ta'lim & Raqamli Savodxonlik</h3><p>Bepul onlayn kurslar, mentorlik tizimi, maktablarga texnika taqsimlash va o'qituvchilar malakasini oshirish.</p></div>
+        <div class="card"><div class="icon">🏥</div><h3>Sog'liq & Psixologik Yordam</h3><p>Tezkor tibbiy maslahat, ruhiy salomatlik markazlari, nogironligi bor shaxslar uchun moslashtirilgan xizmatlar.</p></div>
+        <div class="card"><div class="icon">💼</div><h3>Ish bilan Ta'minlash</h3><p>Kasbga o'rgatish, startap inkubator, qishloq joylarida masofaviy ish imkoniyatlari va grantlar.</p></div>
+        <div class="card"><div class="icon">👨‍👩‍👧‍👦</div><h3>Ijtimoiy Himoya</h3><p>Keksa avlod, ko'p bolali oilalar, nogironlar va kam ta'minlangan qatlamlarga manzilli yordam tizimi.</p></div>
+        <div class="card"><div class="icon">🚀</div><h3>Yoshlar & Volontyorlik</h3><p>Liderlik dasturlari, xalqaro almashinuv, ijtimoiy loyihalar maratoni va e'tirof tizimi.</p></div>
+    </div>
+</section>
+
+<section id="dashboard" class="reveal">
+    <h2>📊 Real Vaqt Natijalari</h2>
+    <p class="subtitle">Platforma ishga tushirilgandan beri qo'lga kiritilgan dastlabki ko'rsatkichlar (simulyatsiya)</p>
+    <div class="dashboard">
+        <div class="metrics">
+            <div class="metric"><div class="num" data-target="142500">0</div><div class="label">Faol Foydalanuvchi</div></div>
+            <div class="metric"><div class="num" data-target="89">0</div><div class="label">Hududiy Filial</div></div>
+            <div class="metric"><div class="num" data-target="3120">0</div><div class="label">Amalga Oshirilgan Loyihalar</div></div>
+            <div class="metric"><div class="num" data-target="47">0</div><div class="label">Milliard So'm Atraksiya</div></div>
+            <div class="metric"><div class="num" data-target="92">0</div><div class="label">% Muvaffaqiyat Ko'rsatkichi</div></div>
+            <div class="metric"><div class="num" data-target="24">0</div><div class="label">Partnyor Tashkilot</div></div>
+        </div>
+        <p style="text-align:center; color:var(--text-muted); margin-top:16px;">📈 Ma'lumotlar har 6 soatda avtomatik yangilanadi. To'liq hisobotlar open-data.gov.uz domenida ochiq.</p>
+    </div>
+</section>
+
+<section id="roadmap" class="reveal">
+    <h2>🗺️ Amalga Oshirish Yo'l Xaritasi (2025–2030)</h2>
+    <div class="roadmap">
+        <div class="roadmap-item">
+            <h4>2025 – Asos Solish</h4>
+            <p>Platforma MVP ishga tushirildi, 10 ta pilot hudud, dastlabki 50 ming volontyor, davlat organlari bilan integratsiya.</p>
+            <span class="status active">✅ Amalda</span>
+        </div>
+        <div class="roadmap-item">
+            <h4>2026 – Kengaytirish</h4>
+            <p>Barcha viloyatlarga chiqish, AI asosidagi taklif tahlili, mobil ilova, xalqaro grantlar jalb qilish.</p>
+            <span class="status active">🔄 Jarayonda</span>
+        </div>
+        <div class="roadmap-item">
+            <h4>2027 – Raqamlashtirish</h4>
+            <p>Blockchain auditi, smart-kontraktlar orqali grant taqsimoti, real-time monitoring markazi.</p>
+            <span class="status planned">📅 Rejalashtirilgan</span>
+        </div>
+        <div class="roadmap-item">
+            <h4>2028–2030 – Barqaror Ta'sir</h4>
+            <p>SDG 17 maqsadiga erishish, eksport modelini yaratish, mintaqaviy lider platforma statusi.</p>
+            <span class="status planned">🌍 Uzoq muddat</span>
+        </div>
+    </div>
+</section>
+
+<section class="reveal">
+    <h2>📖 Bilim & Metodologiya</h2>
+    <div class="knowledge-box">
+        <h4>💡 To'g'ri Yo'l Tamoyillari</h4>
+        <ul>
+            <li><strong>Data-Driven qarorlar:</strong> Har bir qadam statistik tahlil va A/B testlar asosida amalga oshiriladi.</li>
+            <li><strong>Shaffoflik:</strong> Barcha mablag'lar, shartnomalar va natijalar ochiq API orqali taqdim etiladi.</li>
+            <li><strong>Participatory Design:</strong> Loyihalar fuqarolar ishtirokida, ularning ehtiyojlariga moslashtiriladi.</li>
+            <li><strong>Ekosistem Yondashuv:</strong> Davlat, biznes, NGO va akademiya resurslari sinxronlashtiriladi.</li>
+            <li><strong>Barqarorlik:</strong> Har bir loyiha o'zini-o'zi moliyalashtirish yoki grantga asoslangan modelga ega bo'ladi.</li>
+        </ul>
+    </div>
+    <div class="knowledge-box">
+        <h4>📚 O'rganish Manbalari (Bepul)</h4>
+        <ul>
+            <li>SDG Academy – Barqaror rivojlanish kurslari</li>
+            <li>OpenLearn / Coursera – Ijtimoiy innovatsiyalar</li>
+            <li>UNDP Uzbekistan – Hisobotlar va metodik qo'llanmalar</li>
+            <li>GitHub Open Source – Loyiha boshqaruvi & ma'lumotlar vizualizatsiyasi</li>
+        </ul>
+    </div>
+</section>
+
+<section id="join" class="reveal">
+    <h2>🙌 Qanday Qo'shilish Mumkin?</h2>
+    <div class="grid">
+        <div class="card"><h3>👤 Fuqaro Sifatida</h3><p>Ro'yxatdan o'ting, hududingizdagi muammoni e'lon qiling, yechim taklif qiling, volontyorlik ballari yig'ing.</p></div>
+        <div class="card"><h3>🎓 Mutaxassis</h3><p>Mentor bo'ling, loyihalarni ekspertiza qiling, onlayn seminarlar o'tkazib, bilim ulashing.</p></div>
+        <div class="card"><h3>🏢 Tashkilot / Biznes</h3><p>Korporativ ijtimoiy mas'uliyat (CSR) dasturini ulash, grant taqdim etish, texnik resurs berish.</p></div>
+        <div class="card"><h3>🏛️ Davlat Organlari</h3><p>API integratsiya, ma'lumotlar almashinuvi, qonun loyihalarini sinovdan o'tkazish platformasi.</p></div>
+    </div>
+    <div style="text-align:center; margin-top:32px;">
+        <a href="mailto:contact@yurt-uygonishi.uz" class="btn btn-primary">📩 Rasmiy Taklif Yuborish</a>
+    </div>
+</section>
+
+<footer>
+    <div class="logo" style="margin-bottom:12px;">YURT UYG'ONISHI</div>
+    <p>O'zbekiston Respublikasi ijtimoiy rivojlanish strategiyasiga muvofiq ishlab chiqilgan.</p>
+    <div class="footer-links">
+        <a href="#">Bosh sahifa</a>
+        <a href="#">Hujjatlar</a>
+        <a href="#">Open Data</a>
+        <a href="#">Maxfiylik Siyosati</a>
+        <a href="#">Bog'lanish</a>
+    </div>
+    <p style="margin-top:20px; font-size:0.85rem;">© 2025–2026 YURT UYG'ONISHI Ekotizimi. Barcha huquqlar himoyalangan.</p>
+</footer>
+
+<script>
+    // Scroll animatsiyalari
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('active');
+        });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Raqamlar animatsiyasi
+    const animateCounters = () => {
+        document.querySelectorAll('.num').forEach(counter => {
+            const target = +counter.getAttribute('data-target');
+            const duration = 2000;
+            const step = target / (duration / 16);
+            let current = 0;
+            const update = () => {
+                current += step;
+                if (current < target) {
+                    counter.textContent = Math.floor(current).toLocaleString();
+                    requestAnimationFrame(update);
+                } else {
+                    counter.textContent = target.toLocaleString() + (counter.parentElement.querySelector('.label').textContent.includes('%') ? '%' : '+');
+                }
+            };
+            update();
+        });
+    };
+
+    const dashObserver = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) animateCounters();
+        dashObserver.disconnect();
+    }, { threshold: 0.3 });
+    dashObserver.observe(document.querySelector('.dashboard'));
+
+    // Smooth hover effect for cards
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(59,130,246,0.15), var(--glass))`;
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.background = 'var(--glass)';
+        });
+    });
+</script>
+
+</body>
+</html>
